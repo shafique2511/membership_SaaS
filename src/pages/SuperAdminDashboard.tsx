@@ -8,7 +8,7 @@ import {
   Search, ShieldCheck, CreditCard, Filter,
   ExternalLink, MoreVertical, CheckCircle, XCircle
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import {
   DropdownMenu,
   DropdownMenuContent,
