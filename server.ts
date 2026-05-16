@@ -20,6 +20,7 @@ async function startServer() {
 
   app.use(express.json());
   app.use(cookieParser());
+  app.set('trust proxy', 1);
 
   // API routes
   app.get("/api/health", (req, res) => {

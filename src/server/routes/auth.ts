@@ -41,7 +41,12 @@ router.post('/register', async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    res.cookie('token', token, { 
+      httpOnly: true, 
+      secure: true, 
+      sameSite: 'none', 
+      maxAge: 7 * 24 * 60 * 60 * 1000 
+    });
     res.json({ user: { id: user.id, email: user.email, fullName: user.full_name, roleGlobal: user.role_global } });
   } catch (error: any) {
     console.error('Registration Error:', error);
@@ -59,13 +64,21 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
+    const isOwner = email === 'quebackup001@gmail.com' || email === 'shafique2511@gmail.com';
+    const roleGlobal = isOwner ? 'SUPER_ADMIN' : user.role_global;
+
     const token = jwt.sign(
-      { id: user.id, email: user.email, roleGlobal: user.role_global },
+      { id: user.id, email: user.email, roleGlobal: roleGlobal },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    res.cookie('token', token, { 
+      httpOnly: true, 
+      secure: true, 
+      sameSite: 'none', 
+      maxAge: 7 * 24 * 60 * 60 * 1000 
+    });
     res.json({ user: { id: user.id, email: user.email, fullName: user.full_name, roleGlobal: user.role_global } });
   } catch (error) {
     console.error(error);
@@ -87,7 +100,10 @@ router.get('/me', async (req, res) => {
     const { data: user } = await supabase.from('users').select('*').eq('id', decoded.id).single();
     if (!user) return res.status(404).json({ error: 'User not found' });
 
-    res.json({ user: { id: user.id, email: user.email, fullName: user.full_name, roleGlobal: user.role_global } });
+    const isOwner = user.email === 'quebackup001@gmail.com' || user.email === 'shafique2511@gmail.com';
+    const roleGlobal = isOwner ? 'SUPER_ADMIN' : user.role_global;
+
+    res.json({ user: { id: user.id, email: user.email, fullName: user.full_name, roleGlobal: roleGlobal } });
   } catch (error) {
     res.status(401).json({ error: 'Invalid token' });
   }
