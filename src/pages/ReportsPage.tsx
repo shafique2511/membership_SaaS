@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { safeFetch } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { 
   BarChart, 
@@ -28,8 +29,7 @@ export default function ReportsPage() {
 
   useEffect(() => {
     if (currentBusiness) {
-      fetch(`/api/businesses/${currentBusiness.id}/analytics`)
-        .then(res => res.json())
+      safeFetch(`/api/businesses/${currentBusiness.id}/analytics`)
         .then(resData => {
           setData(resData);
           setLoading(false);

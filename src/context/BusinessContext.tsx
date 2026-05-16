@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import { safeFetch } from '@/lib/api';
 
 interface ModuleAccess {
   id: string;
@@ -45,11 +46,8 @@ export function BusinessProvider({ children }: { children: React.ReactNode }) {
   const fetchBusinessById = async (id: string) => {
     setIsLoading(true);
     try {
-      const resp = await fetch(`/api/businesses/${id}`);
-      if (resp.ok) {
-        const data = await resp.json();
-        setCurrentBusiness(data);
-      }
+      const data = await safeFetch(`/api/businesses/${id}`);
+      setCurrentBusiness(data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -60,8 +58,7 @@ export function BusinessProvider({ children }: { children: React.ReactNode }) {
   const fetchUserBusinesses = async () => {
     setIsLoading(true);
     try {
-      const resp = await fetch('/api/businesses/my-businesses');
-      const data = await resp.json();
+      const data = await safeFetch('/api/businesses/my-businesses');
       if (data && data.length > 0) {
         setCurrentBusiness(data[0].business);
       }
@@ -76,10 +73,9 @@ export function BusinessProvider({ children }: { children: React.ReactNode }) {
     if (!currentBusiness) return;
     try {
       // In a real app, this would be a single optimized endpoint
-      const resp = await fetch(`/api/businesses/${currentBusiness.id}/modules`, {
+      const data = await safeFetch(`/api/businesses/${currentBusiness.id}/modules`, {
         headers: { 'x-business-id': currentBusiness.id }
       });
-      const data = await resp.json();
       setModules(data);
     } catch (err) {
       console.error(err);

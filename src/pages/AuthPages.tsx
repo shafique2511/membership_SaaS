@@ -22,13 +22,21 @@ export function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      const data = await res.json();
-      if (res.ok) {
-        login(data.user);
-        toast.success("Logged in successfully");
-        navigate("/dashboard");
+      
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await res.json();
+        if (res.ok) {
+          login(data.user);
+          toast.success("Logged in successfully");
+          navigate("/dashboard");
+        } else {
+          toast.error(data.error || "Login failed");
+        }
       } else {
-        toast.error(data.error || "Login failed");
+        const text = await res.text();
+        console.error("Login non-JSON response:", text.substring(0, 200));
+        toast.error("Server error: unexpected response format");
       }
     } catch (err) {
       toast.error("Something went wrong");
@@ -84,13 +92,21 @@ export function RegisterPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, fullName }),
       });
-      const data = await res.json();
-      if (res.ok) {
-        login(data.user);
-        toast.success("Account created successfully");
-        navigate("/onboarding");
+      
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await res.json();
+        if (res.ok) {
+          login(data.user);
+          toast.success("Account created successfully");
+          navigate("/onboarding");
+        } else {
+          toast.error(data.error || "Registration failed");
+        }
       } else {
-        toast.error(data.error || "Registration failed");
+        const text = await res.text();
+        console.error("Registration non-JSON response:", text.substring(0, 200));
+        toast.error("Server error: unexpected response format");
       }
     } catch (err) {
       toast.error("Something went wrong");

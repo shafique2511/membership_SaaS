@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { safeFetch } from '@/lib/api';
 
 interface User {
   id: string;
@@ -21,18 +22,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/auth/me')
-      .then(res => res.json())
+    safeFetch('/api/auth/me')
       .then(data => {
         if (data.user) setUser(data.user);
       })
-      .catch(() => setUser(null))
+      .catch((err) => {
+        console.error('Auth check failed:', err);
+        setUser(null);
+      })
       .finally(() => setLoading(false));
   }, []);
 
   const login = (userData: User) => setUser(userData);
   const logout = () => {
-    fetch('/api/auth/logout', { method: 'POST' }).then(() => setUser(null));
+    safeFetch('/api/auth/logout', { method: 'POST' }).finally(() => setUser(null));
   };
 
   return (

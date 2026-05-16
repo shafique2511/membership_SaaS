@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/Button";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback } from "@/components/ui/Avatar";
 import { useBusiness } from "@/context/BusinessContext";
+import { safeFetch } from "@/lib/api";
 
 const data = [
   { name: "Mon", sales: 400, bookings: 24 },
@@ -34,13 +35,11 @@ export default function BusinessOverview() {
 
   useEffect(() => {
     if (currentBusiness) {
-      fetch(`/api/businesses/${currentBusiness.id}/stats`)
-        .then(res => res.json())
+      safeFetch(`/api/businesses/${currentBusiness.id}/stats`)
         .then(data => setStats(data))
         .catch(err => console.error(err));
 
-      fetch(`/api/bookings/business/${currentBusiness.id}`)
-        .then(res => res.json())
+      safeFetch(`/api/bookings/business/${currentBusiness.id}`)
         .then(data => setRecentBookings(data.slice(0, 5)))
         .catch(err => console.error(err));
     }

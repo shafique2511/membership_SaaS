@@ -35,6 +35,11 @@ async function startServer() {
   app.use("/api/pos", posRoutes);
   app.use("/api/customers", customerRoutes);
 
+  // Fallback for API routes to never return HTML
+  app.use("/api/*", (req, res) => {
+    res.status(404).json({ error: "API route not found" });
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({

@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { BusinessProvider } from "./context/BusinessContext";
+import { safeFetch } from "./lib/api";
 import LandingPage from "./pages/LandingPage";
 import { LoginPage, RegisterPage } from "./pages/AuthPages";
 import OnboardingPage from "./pages/OnboardingPage";
@@ -44,8 +45,7 @@ function DashboardRedirect() {
 
   React.useEffect(() => {
     if (!loading && user) {
-      fetch("/api/businesses/my-businesses")
-        .then((res) => res.json())
+      safeFetch("/api/businesses/my-businesses")
         .then((data) => {
           if (data && data.length > 0) {
             setRedirectPath(`/dashboard/${data[0].business.id}`);
