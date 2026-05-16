@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { CalendarDays, Users, TrendingUp, Clock, Scissors, CreditCard, ChevronRight, Package } from "lucide-react";
 import { 
   BarChart, 
@@ -12,9 +12,9 @@ import {
   LineChart,
   Line
 } from "recharts";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Link } from "react-router-dom";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/Avatar";
 import { useBusiness } from "@/context/BusinessContext";
 
 const data = [

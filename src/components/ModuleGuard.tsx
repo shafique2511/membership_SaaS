@@ -1,7 +1,7 @@
 import React from 'react';
 import { useBusiness } from '@/context/BusinessContext';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Lock, Rocket } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

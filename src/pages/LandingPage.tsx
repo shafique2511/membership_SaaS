@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { 
   Rocket, Shield, Zap, Layers, 
@@ -9,8 +9,8 @@ import {
   Smartphone, BarChart3, Users,
   Search
 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/Badge';
+import { Separator } from '@/components/ui/Separator';
 import { cn } from '@/lib/utils';
 import { useBusiness } from '@/context/BusinessContext';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { 
   Users, Calendar, ShoppingCart, TrendingUp, 
   ArrowUpRight, ArrowDownRight, Package, Users2,
@@ -12,8 +12,8 @@ import {
   Tooltip, ResponsiveContainer, LineChart, Line 
 } from 'recharts';
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/Avatar";
+import { Badge } from "@/components/ui/Badge";
 
 const data = [
   { name: 'Mon', sales: 4000, bookings: 24 },

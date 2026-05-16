@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { 
   BarChart, 
   Bar, 
@@ -14,9 +14,9 @@ import {
   LineChart,
   Line
 } from "recharts";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Download, Calendar, Filter, Loader2 } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
 import { useBusiness } from "@/context/BusinessContext";
 
 const COLORS = ["#0f172a", "#3b82f6", "#10b981", "#f59e0b"];

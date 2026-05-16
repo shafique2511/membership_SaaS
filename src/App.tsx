@@ -20,7 +20,7 @@ import CustomerPortal from "./pages/CustomerPortal";
 import InventoryManagement from "./pages/InventoryManagement";
 import LoyaltyManagement from "./pages/LoyaltyManagement";
 import { ModuleGuard } from "./components/ModuleGuard";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/Sonner";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
