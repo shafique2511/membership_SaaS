@@ -18,6 +18,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { Separator } from "@/components/ui/Separator";
 import { useAuth } from "@/context/AuthContext";
+import { safeFetch } from "@/lib/api";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -38,13 +39,10 @@ export default function CustomerPortal() {
 
   const fetchBusinessData = async () => {
     try {
-      const res = await fetch(`/api/businesses/public/${slug}`);
-      if (!res.ok) throw new Error("Business not found");
-      const data = await res.json();
+      const data = await safeFetch(`/api/businesses/public/${slug}`);
       setBusiness(data);
 
-      const sRes = await fetch(`/api/businesses/${data.id}/public-services`);
-      const sData = await sRes.json();
+      const sData = await safeFetch(`/api/businesses/${data.id}/public-services`);
       setServices(sData);
     } catch (err) {
       console.error(err);
@@ -64,7 +62,7 @@ export default function CustomerPortal() {
     if (!selectedService) return;
 
     try {
-      const res = await fetch("/api/bookings", {
+      await safeFetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -75,14 +73,10 @@ export default function CustomerPortal() {
         })
       });
 
-      if (res.ok) {
-        toast.success("Booking requested! We'll notify you once confirmed.");
-        setSelectedService(null);
-      } else {
-        toast.error("Failed to book appointment");
-      }
-    } catch (err) {
-      toast.error("Something went wrong");
+      toast.success("Booking requested! We'll notify you once confirmed.");
+      setSelectedService(null);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to book appointment");
     }
   };
 

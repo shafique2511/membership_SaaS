@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/Input";
 import { ScrollArea } from "@/components/ui/ScrollArea";
 import { Separator } from "@/components/ui/Separator";
 import { useBusiness } from "@/context/BusinessContext";
+import { safeFetch } from "@/lib/api";
 import { 
   ShoppingCart, 
   Search, 
@@ -40,13 +41,10 @@ export default function POSModule() {
     if (currentBusiness) {
       const fetchAll = async () => {
         try {
-          const [invRes, servRes] = await Promise.all([
-            fetch(`/api/inventory`, { headers: { 'x-business-id': currentBusiness.id } }),
-            fetch(`/api/businesses/${currentBusiness.id}/public-services`)
+          const [invData, servData] = await Promise.all([
+            safeFetch(`/api/inventory`, { headers: { 'x-business-id': currentBusiness.id } }),
+            safeFetch(`/api/businesses/${currentBusiness.id}/public-services`)
           ]);
-          
-          const invData = await invRes.json();
-          const servData = await servRes.json();
           
           const joined = [
             ...(invData || []).map((p: any) => ({ ...p, type: 'product', price: Number(p.price_sell) })),
@@ -93,7 +91,7 @@ export default function POSModule() {
     if (cart.length === 0) return;
     
     try {
-      const res = await fetch('/api/pos', {
+      await safeFetch('/api/pos', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -106,20 +104,16 @@ export default function POSModule() {
         })
       });
 
-      if (res.ok) {
-        toast.success("Transaction completed successfully!");
-        setCart([]);
-        // Optional: refresh inventory to see updated stock
-        fetch(`/api/inventory`, {
-          headers: { 'x-business-id': currentBusiness.id }
-        })
-          .then(res => res.json())
-          .then(data => setProductsList(data));
-      } else {
-        toast.error("Checkout failed. Please try again.");
-      }
-    } catch (err) {
-      toast.error("Something went wrong");
+      toast.success("Transaction completed successfully!");
+      setCart([]);
+      // Optional: refresh inventory to see updated stock
+      safeFetch(`/api/inventory`, {
+        headers: { 'x-business-id': currentBusiness.id }
+      })
+        .then(data => setProductsList(data))
+        .catch(err => console.error("Refresh inventory failed", err));
+    } catch (err: any) {
+      toast.error(err.message || "Checkout failed");
     }
   };
 

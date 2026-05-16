@@ -14,9 +14,8 @@ import customerRoutes from "./src/server/routes/customers.ts";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-async function startServer() {
+async function createServer() {
   const app = express();
-  const PORT = 3000;
 
   app.use(express.json());
   app.use(cookieParser());
@@ -55,11 +54,19 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  return app;
+}
+
+if (process.env.NODE_ENV !== "test") {
+  createServer().then(app => {
+    const PORT = 3000;
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  }).catch((err) => {
+    console.error("Failed to start server:", err);
   });
 }
 
-startServer().catch((err) => {
-  console.error("Failed to start server:", err);
-});
+export default createServer;
+export { createServer };

@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Label } from "@/components/ui/Label";
 import { Scissors } from "lucide-react";
 import { toast } from "sonner";
+import { safeFetch } from "@/lib/api";
 
 export function LoginPage() {
   const [email, setEmail] = useState("");
@@ -17,29 +18,17 @@ export function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/auth/login", {
+      const data = await safeFetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
       
-      const contentType = res.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        const data = await res.json();
-        if (res.ok) {
-          login(data.user);
-          toast.success("Logged in successfully");
-          navigate("/dashboard");
-        } else {
-          toast.error(data.error || "Login failed");
-        }
-      } else {
-        const text = await res.text();
-        console.error("Login non-JSON response:", text.substring(0, 200));
-        toast.error("Server error: unexpected response format");
-      }
-    } catch (err) {
-      toast.error("Something went wrong");
+      login(data.user);
+      toast.success("Logged in successfully");
+      navigate("/dashboard");
+    } catch (err: any) {
+      toast.error(err.message || "Login failed");
     }
   };
 
@@ -87,29 +76,17 @@ export function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/auth/register", {
+      const data = await safeFetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, fullName }),
       });
       
-      const contentType = res.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        const data = await res.json();
-        if (res.ok) {
-          login(data.user);
-          toast.success("Account created successfully");
-          navigate("/onboarding");
-        } else {
-          toast.error(data.error || "Registration failed");
-        }
-      } else {
-        const text = await res.text();
-        console.error("Registration non-JSON response:", text.substring(0, 200));
-        toast.error("Server error: unexpected response format");
-      }
-    } catch (err) {
-      toast.error("Something went wrong");
+      login(data.user);
+      toast.success("Account created successfully");
+      navigate("/onboarding");
+    } catch (err: any) {
+      toast.error(err.message || "Registration failed");
     }
   };
 

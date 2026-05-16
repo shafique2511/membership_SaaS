@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
 import { useBusiness } from "@/context/BusinessContext";
+import { safeFetch } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 export default function InventoryManagement() {
@@ -32,10 +33,9 @@ export default function InventoryManagement() {
 
   const fetchInventory = async () => {
     try {
-      const res = await fetch('/api/inventory', {
+      const data = await safeFetch('/api/inventory', {
         headers: { 'x-business-id': currentBusiness.id }
       });
-      const data = await res.json();
       setInventory(data);
     } catch (err) {
       console.error(err);
