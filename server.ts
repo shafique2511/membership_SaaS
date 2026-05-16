@@ -57,8 +57,10 @@ async function createServer() {
   return app;
 }
 
-if (process.env.NODE_ENV !== "test") {
-  createServer().then(app => {
+const appPromise = createServer();
+
+if (process.env.NODE_ENV !== "test" && !process.env.VERCEL) {
+  appPromise.then(app => {
     const PORT = 3000;
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on http://localhost:${PORT}`);
@@ -68,5 +70,7 @@ if (process.env.NODE_ENV !== "test") {
   });
 }
 
-export default createServer;
-export { createServer };
+export default async (req: any, res: any) => {
+  const app = await appPromise;
+  return app(req, res);
+};

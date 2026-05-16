@@ -2,5 +2,7 @@
   "name": "OmniBiz SaaS",
   "description": "A comprehensive multi-tenant membership and booking management platform for service-based businesses like barber shops and coffee shops.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
